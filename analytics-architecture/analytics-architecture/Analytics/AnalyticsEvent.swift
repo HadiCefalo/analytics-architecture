@@ -5,8 +5,14 @@
 //  Created by Abdullah Al Hadi on 2/10/23.
 //
 
-import SwiftUI
+import Foundation
 
+protocol AnalyticsEvent {
+    var name: String { get set }
+    var metaData: [String: String] { get set }
+}
+
+/*
 enum AnalyticsEvent {
     case itemAdded(item: Item)
     case itemDeleted(index: Int)
@@ -51,3 +57,4 @@ extension AnalyticsEvent {
         }
     }
 }
+*/

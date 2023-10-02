@@ -24,7 +24,7 @@ struct MySecondView: View {
         } detail: {
             Text("Select an item")
         }.onAppear {
-            AnalyticsManager.shared.log(event: .secondViewLoaded)
+            AnalyticsManager.shared.log(event: SecondViewAnalyticEvents.secondViewLoaded())
         }.navigationTitle("Second View")
     }
 }
