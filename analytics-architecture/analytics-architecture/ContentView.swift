@@ -18,6 +18,10 @@ struct ContentView: View {
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                            .navigationTitle("Item Detail")
+                            .onAppear {
+                                AnalyticsManager.shared.log(event: .itemDetailsViewLoaded)
+                            }
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
                     }
@@ -26,22 +30,29 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                    NavigationLink(
+                        destination: MySecondView(),
+                        label: {
+                            Text("2nd View")
+                        })
                 }
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
-            }
+            }.navigationBarTitle("Home")
         } detail: {
             Text("Select an item")
-        }
+        }.onAppear {
+            AnalyticsManager.shared.log(event: .homeViewLoaded)
+        }.navigationBarTitle("Home View")
     }
 
     private func addItem() {
         withAnimation {
             let newItem = Item(timestamp: Date())
+            AnalyticsManager.shared.log(event: .itemAdded(item: newItem))
             modelContext.insert(newItem)
         }
     }
@@ -50,6 +61,7 @@ struct ContentView: View {
         withAnimation {
             for index in offsets {
                 modelContext.delete(items[index])
+                AnalyticsManager.shared.log(event: .itemDeleted(index: index))
             }
         }
     }
